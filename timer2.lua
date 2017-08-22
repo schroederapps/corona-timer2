@@ -124,7 +124,7 @@ end
 ----------------------------------------
 -- MODIFY TIMER.CANCEL
 ----------------------------------------
-function timer.cancel(...)
+function timer.cancel(timerID)
 	if timerID == nil then
 		for i = #timers, 1, -1 do
 			if not timers[i].exclude then
