@@ -1,5 +1,5 @@
 -- Timer 2.0 Library for Corona SDK
--- Copyright (c) 2015 Jason Schroeder
+-- Copyright (c) 2015-2017 Jason Schroeder
 -- http://www.jasonschroeder.com
 -- http://www.twitter.com/schroederapps
 
