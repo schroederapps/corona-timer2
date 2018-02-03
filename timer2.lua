@@ -71,25 +71,13 @@ end
 -- MODIFY TIMER.PAUSE
 ----------------------------------------
 function timer.pause(timerID)
-  if timerID == nil then
-    for i = #timers, 1, -1 do
-      if not timers[i].exclude then
-        local timeLeft = timer.pause0(timers[i])
-        if timeLeft <=0 and (timers[i]._iterations ==  nil or timers[i]._iterations == 0) then
-          timers[i] = nil
-          table.remove(timers, i)
-        end
-      end
-    end
-  else
-    for i = #timers, 1, -1 do
-      if timerID == timers[i] or timerID == timers[i].tag then
-        local timeLeft = timer.pause0(timers[i])
-        if timeLeft <=0 and (timers[i]._iterations ==  nil or timers[i]._iterations == 0) then
-          timers[i] = nil
-          table.remove(timers, i)
-        end
-      end
+  for i = #timers, 1, -1 do
+    local t = timers[i]
+    if t._expired then
+      t = nil
+      table.remove(timers, i)
+    elseif (timerID == nil and not t.exclude) or (timerID and (timerID == t or timerID == t.tag)) then
+      timer.pause0(t)
     end
   end
 end
@@ -98,25 +86,13 @@ end
 -- MODIFY TIMER.RESUME
 ----------------------------------------
 function timer.resume(timerID)
-  if timerID == nil then
-    for i = #timers, 1, -1 do
-      if not timers[i].exclude then
-        local timeLeft = timer.resume0(timers[i])
-        if timeLeft <=0 and (timers[i]._iterations ==  nil or timers[i]._iterations == 0) then
-          timers[i] = nil
-          table.remove(timers, i)
-        end
-      end
-    end
-  else
-    for i = #timers, 1, -1 do
-      if timerID == timers[i] or timerID == timers[i].tag then
-        local timeLeft = timer.resume0(timers[i])
-        if timeLeft <=0 and (timers[i]._iterations ==  nil or timers[i]._iterations == 0) then
-          timers[i] = nil
-          table.remove(timers, i)
-        end
-      end
+  for i = #timers, 1, -1 do
+    local t = timers[i]
+    if t._expired then
+      t = nil
+      table.remove(timers, i)
+    elseif (timerID == nil and not t.exclude) or (timerID and (timerID == t or timerID == t.tag)) then
+      timer.resume0(t)
     end
   end
 end
@@ -125,20 +101,12 @@ end
 -- MODIFY TIMER.CANCEL
 ----------------------------------------
 function timer.cancel(timerID)
-  if timerID == nil then
-    for i = #timers, 1, -1 do
-      if not timers[i].exclude then
-        timer.cancel0(timers[i])
-        table.remove(timers, i)
-      end
-    end
-  else
-    for i = #timers, 1, -1 do
-      if timerID == timers[i] or timerID == timers[i].tag then
-        timer.cancel0(timers[i])
-        timers[i] = nil
-        table.remove(timers, i)
-      end
+  for i = #timers, 1, -1 do
+    local t = timers[i]
+    if (timerID == nil and not t.exclude) or (timerID and (timerID == t or timerID == t.tag)) then
+      timer.cancel0(t)
+      t = nil
+      table.remove(timers, i)
     end
   end
 end
